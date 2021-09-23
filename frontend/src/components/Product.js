@@ -9,13 +9,17 @@ export default function Product(props) {
             <div key={product._id} className="card">
               <Link to={`/product/${product._id}`}>
                   <img className="medium" src={product.image}alt="product"/>
+                  {/*ürünün resiminin çekildiği satır.*/}
               </Link>
               <div className="card-body">
                   <Link to={`/product/${product._id}`}>
                       <h2>{product.name}</h2>
+                      {/*ürünün adının çekildiği satır.*/}
                   </Link>
                   <Rating rating={product.rating} numReviews={product.numReviews}/>
+                  {/*ürünün reytinginin çekildiği satır.*/}
                   <div className="price">${product.price}</div>
+                  {/*ürünün fiyatının çekildiği satır.*/}
               </div>
             </div>
         </div>

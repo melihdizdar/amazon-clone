@@ -8,6 +8,11 @@ const{
 } = require('../constants/productConstants');
 
 export const productListReducer = (state = { loading:true, products:[] },action) => {
+    /*
+        Ürünlerin talep edildiği durumda yükleme ekranının çıkacağını,
+        başarılı durumda yükleme ekranın çıkmayıp ürünlerin yayınlanacağını,
+        başarısız durumda error mesajı geleceğini tanımladık.
+    */
     switch(action.type){
         case PRODUCTS_LIST_REQUEST:
             return{loading:true};
@@ -21,6 +26,11 @@ export const productListReducer = (state = { loading:true, products:[] },action)
 }
 
 export const productDetailsReducer = (state = {product:{},loading:true},action) => {
+    /*
+        Ürüne tıklanıldığı zaman ürün detayları sayfası gelirken öncesinde yükleme ekranının geleceğini,
+        başarılı olduğu taktirde loading ekranının gelmeyip ürünlerin detay sayfasına girileceğini,
+        başarısız durumda loading olmayacağı ve error mesajının geleceği tanımlanır.
+    */
     switch(action.type){
         case PRODUCTS_DETAILS_REQUEST:
             return {loading:true};

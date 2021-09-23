@@ -3,12 +3,15 @@ import thunk from 'redux-thunk';
 import { cartReducer } from './reducers/cartReducers';
 import { productListReducer,productDetailsReducer } from "./reducers/productReducers";
 
+/*react-redux kısmındaki store kısmını açma komutları*/
+
 const initialState = {
     cart:{
         cartItems: localStorage.getItem('cartItems')? JSON.parse(localStorage.getItem('cartItems')):[],
     },
 };
 const reducer = combineReducers({
+    // reducerların tanımlandığı kod satırları
     productList: productListReducer,
     productDetails: productDetailsReducer,
     cart: cartReducer,

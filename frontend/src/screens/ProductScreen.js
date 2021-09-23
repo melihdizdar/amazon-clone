@@ -7,6 +7,7 @@ import MessageBox from '../components/MessageBox';
 import Rating from '../components/Rating';
 
 export default function ProductScreen(props) {
+    //Kullanılan fonksiyonların tanımlandığı kod satırları
     const dispatch = useDispatch();
     const productId = props.match.params.id;
     const [qty, setQty] = useState(1);
@@ -21,29 +22,32 @@ export default function ProductScreen(props) {
     };
     return (
         <div>
-            {loading? <LoadingBox/>
+            {loading? <LoadingBox/> //Yükleme ekranın loading komutunda gösterileceğinin belirlendiği yer.
             :
             error? (<MessageBox variant="danger">{error}</MessageBox>
             ):(
-                    <div>
+                //Başarısız ekranın error komutunda gösterileceğinin belirlendiği yer.
+        <div>
             <Link to="/">Back to result</Link>
             <div className="row top">
                 <div className="col-2">
                     <img className="large" src={product.image} alt={product.name}/>
+                    {/*ürünün resminin çekildiği satır.*/}
                 </div>
                 <div className="col-1">
                     <ul>
                         <li>
-                            <h1>{product.name}</h1>
+                            <h1>{product.name}</h1> {/*ürünün adının çekildiği satır.*/}
                         </li>
                         <li>
                             <Rating rating={product.rating} numReviews={product.numReviews}/>
+                            {/*ürünün ratinginin ve review kısmının çekildiği satır.*/}
                         </li>
                         <li>
-                            Price : ${product.price}
+                            Price : ${product.price} {/*ürünün fiyatının çekildiği satır.*/}
                         </li>
                         <li>Description:
-                            <p>{product.description}</p>
+                            <p>{product.description}</p> {/*ürünün açıklamasının çekildiği satır.*/}
                         </li>
                     </ul>
                 </div>
@@ -54,6 +58,7 @@ export default function ProductScreen(props) {
                                 <div className="row">
                                     <div>Price</div>
                                     <div className="price">${product.price}</div>
+                                    {/*ürünün fiyatının çekildiği satır.*/}
                                 </div>
                             </li>
                             <li>
@@ -62,10 +67,12 @@ export default function ProductScreen(props) {
                                     <div>
                                         {product.coutInStock > 0?(<span className="success">In Stock</span>):
                                         (<span className="danger">Unavailable</span>)}
+                                        {/*ürünün coutinstock kısmı 0 dan büyük değil ise unavailable olarak gösterildiği satır.*/}
                                     </div>
                                 </div>
                             </li>
                             {
+                                //ürününü coutinstock kısmı 0'dan büyük ise aşağıdaki kod satırını uygula
                                 product.coutInStock > 0 && (
                                 <>
                                 <li>
@@ -73,6 +80,7 @@ export default function ProductScreen(props) {
                                         <div>Qty</div>
                                         <div>
                                             <select value={qty} onChange={e => setQty(e.target.value)}>
+                                                {/*coutinstock'da belirtildiği sayıya kadar 1 artırarak ulaş*/}
                                                 {
                                                     [...Array(product.coutInStock).keys()].map((x) => (
                                                         <option key={x+1} value={x+1} > {x+1}</option>
@@ -84,6 +92,7 @@ export default function ProductScreen(props) {
                                 </li>
                                 <li>
                                     <button onClick={addToCartHandler} className="primary block">Add to Cart</button>
+                                    {/*buttona basıldığı zaman addToCardHandler kısmına yönlendir.*/}
                                 </li>
                                 </>
                             )}

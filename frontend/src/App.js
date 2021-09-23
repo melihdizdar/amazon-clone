@@ -6,7 +6,7 @@ import CartScreen from "./screens/CartScreen";
 import { useSelector } from "react-redux";
 
 function App() {
-
+  //Değişkenleri tanımladığımız kod satırı.
   const cart = useSelector(state => state.cart);
   const { cartItems } = cart;
 
@@ -18,6 +18,7 @@ function App() {
                   <Link className="brand" to="/">amazon</Link>
               </div>
               <div>
+                {/*Sepetin içindeki ürünlerin sayısı 0'dan büyük ise badge oluştur.*/}
                   <Link to="/cart">Cart {cartItems.length > 0 && (
                     <span className="badge">{cartItems.length}</span>
                   )}</Link>

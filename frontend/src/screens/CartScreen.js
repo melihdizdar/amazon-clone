@@ -5,6 +5,7 @@ import { addToCart, removeFromCart } from '../actions/cardActions';
 import MessageBox from '../components/MessageBox';
 
 export default function CartScreen(props) {
+    /*Kullanılacak değerlerin tanımlandığı yer.*/
     const productId = props.match.params.id;
     const qty = props.location.search ? Number(props.location.search.split('=')[1]) : 1;
     const cart = useSelector((state) => state.cart);
@@ -16,12 +17,13 @@ export default function CartScreen(props) {
         }
     },[dispatch,productId,qty]);
     const removeFromCartHandler = (id) =>{
-        //delete action
+        //Silme aksiyonu
         dispatch(removeFromCart(id));
     };
 
     const checkoutHandler = () =>{
         props.history.push('/sigin?redirect=shipping')
+        //Procced to Checkout'a bastığı zaman olacak aksiyon.
     };
     return (
         <div className="row top">
@@ -30,6 +32,7 @@ export default function CartScreen(props) {
                 {cartItems.length === 0 ? (<MessageBox>
                     Cart is empty. <Link to="/">Go Shopping</Link>
                 </MessageBox>
+                //sepet boş olduğu zaman vereceği mesaj
                 ):(
                     <ul>
                         {
@@ -38,9 +41,12 @@ export default function CartScreen(props) {
                                     <div className="row">
                                         <div>
                                             <img src={item.image} alt={item.name} className="small"></img>
+                                            {/*Sepetteki ürünün resminin çekildiği kod satırı*/}
                                         </div>
                                         <div className="min-30">
                                             <Link to={`/product/${item.product}`}>{item.name}</Link>
+                                            {/*Sepetteki ürünün adının gösterildiği ve linkinin id'sine 
+                                            göre olacağını belirleyen kod satırı*/}
                                         </div>
                                         <div>
                                             <select value={item.qty} onChange={(e) => dispatch(addToCart(item.product, Number(e.target.value)))}>
@@ -48,14 +54,16 @@ export default function CartScreen(props) {
                                                     [...Array(item.coutInStock).keys()].map((x) => (
                                                         <option key={x+1} value={x+1}>{x+1}</option>
                                                     )
+                                                    //Sepetteki ürünün qty kısmının çekildiği kod satırı
                                                 )}
                                             </select>
                                         </div>
-                                        <div>${item.price}</div>
+                                        <div>${item.price}</div> {/*Sepetteki ürünün fiyatının çekildiği kod satırı*/}
                                         <div>
                                             <button type="button" onClick={() => removeFromCartHandler(item.product)}>
                                                 Delete
                                             </button>
+                                            {/*Sepetteki ürünlerin silme işleminin yapıldığı button*/}
                                         </div>
                                     </div>
                                 </li>
