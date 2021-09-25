@@ -4,6 +4,7 @@ import ProductScreen from "./screens/ProductScreen";
 import { BrowserRouter,Link,Route} from 'react-router-dom';
 import CartScreen from "./screens/CartScreen";
 import { useSelector } from "react-redux";
+import SigninScreen from "./screens/SigninScreen";
 
 function App() {
   //Değişkenleri tanımladığımız kod satırı.
@@ -26,8 +27,9 @@ function App() {
               </div>
           </header>
           <main>
-            <Route path="/cart/:id?" component={CartScreen}></Route>
+            <Route path="/cart/:id?" component={CartScreen}/>
             <Route path="/product/:id" component={ProductScreen}/>
+            <Route path="/signin" component={SigninScreen}/>
             <Route path="/" component={HomeScreen} exact/>
           </main>
           <footer className="row center">All right reserved</footer>
