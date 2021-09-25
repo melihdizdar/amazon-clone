@@ -1,11 +1,18 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 import productRouter from './routers/productRouter.js';
 import userRouter from './routers/userRouter.js';
 
+dotenv.config(); //token
+
 const app = express();
-//mongodb bağlantı kod satırı
+
+app.use(express.json()); //token
+app.use(express.urlencoded({extended:true})); //token
+
 mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost/amazon',{
+    //mongodb bağlantı kod satırı
     useUnifiedTopology: true,
     useNewUrlParser: true
 });
