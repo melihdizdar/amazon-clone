@@ -1,29 +1,46 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { signin } from '../actions/userActions';
+import LoadingBox from '../components/LoadingBox';
+import MessageBox from '../components/MessageBox';
 
-export default function SigninScreen() {
+export default function SigninScreen(props) {
 
-    // eslint-disable-next-line no-unused-vars
     const [email,setEmail] = useState('');
-    // eslint-disable-next-line no-unused-vars
     const [password, setPassword] = useState('');
+
+    const redirect = props.location.search ? props.location.search.split('=')[1] : '/';
+    const userSignin = useSelector((state) => state.userSignin);
+    const { userInfo , loading , error} = userSignin;
+
+    const dispatch = useDispatch();
     const submitHandler = (e) =>{
+        //signin button action
         e.preventDefault();
-        // sigin action
-    }
+        dispatch(signin(email,password));
+    };
+    useEffect(() =>{
+        //kullanıcı isminden carta dönme olayı (redirect)
+        if(userInfo){
+            props.history.push(redirect);
+        }
+    } ,[props.history,redirect,userInfo]);
     return (
         <div>
             <form className="form" onSubmit={submitHandler}>
                 <div>
                     <h1>Sign In</h1>
                 </div>
+                {loading && <LoadingBox/>}
+                {error && <MessageBox variant="danger">{error}</MessageBox>}
                 <div>
                     <label htmlFor="email">Email Adress</label>
                     <input type="email" id="email" placeholder="Enter email" required
                     onChange={e => setEmail(e.target.value)}></input>
                 </div>
                 <div>
-                    <label htmlFor="password">Email Adress</label>
+                    <label htmlFor="password">Password</label>
                     <input type="password" id="password" placeholder="Enter password" required
                     onChange={e => setPassword(e.target.value)}></input>
                 </div>
