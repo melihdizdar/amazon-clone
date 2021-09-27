@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import productRouter from './routers/productRouter.js';
 import userRouter from './routers/userRouter.js';
+import orderRouter from './routers/orderRouter.js';
 
 dotenv.config(); //token
 
@@ -20,6 +21,8 @@ app.use('/api/users', userRouter);
 // api/users linkini userRouter'a bağladık
 app.use('/api/products', productRouter);
 // api/products linkini productRouter'a bağladık
+app.use('/api/orders', orderRouter);
+// api/orders linkini orderRoter'a bağladık
 
 app.get('/',(req,res) => {
     res.send('Server is ready');
