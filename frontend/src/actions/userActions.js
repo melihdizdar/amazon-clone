@@ -41,5 +41,6 @@ export const signout = () => (dispatch) =>{
     //navbar'daki üye isminin silinip cart'ın gelme olayı
     localStorage.removeItem('userInfo');
     localStorage.removeItem('cartItems');
+    localStorage.removeItem('shippingAddress');
     dispatch({type:USER_SIGNOUT});
 };
