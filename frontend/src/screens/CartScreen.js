@@ -22,7 +22,7 @@ export default function CartScreen(props) {
     };
 
     const checkoutHandler = () =>{
-        props.history.push('/sigin?redirect=shipping')
+        props.history.push('/signin?redirect=shipping')
         //Procced to Checkout'a bastığı zaman olacak aksiyon.
     };
     return (
