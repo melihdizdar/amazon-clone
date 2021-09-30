@@ -35,4 +35,23 @@ orderRouter.get('/:id',isAuth,expressAsyncHandler(async (req, res) => {
   })
 );
 
+orderRouter.put('/:id/pay'),isAuth,expressAsyncHandler(async (req,res) => {
+  // 31.Ders burda order işlemi yapılınca olan kullanılacak değerlerin tanımlamaları yapıldı
+  const order = await Order.findById(req.params.id);
+  if (order) {
+    order.isPaid = true;
+    order.paidAt = Date.now();
+    order.paymentResult = {
+      id: req.body.id,
+      status: req.body.status,
+      update_time: req.body.update_time,
+      email_address: req.body.email_address,
+    };
+    const updatedOrder = await order.save();
+    res.send({message: 'Order Paid', order: updatedOrder});
+  } else {
+    res.status(404).send({message: 'Order Not Found'});
+  }
+});
+
 export default orderRouter;
