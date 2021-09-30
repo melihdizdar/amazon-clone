@@ -1,4 +1,6 @@
-import React, { useEffect } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { PayPalButton } from 'react-paypal-button-v2';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { detailsOrder } from '../actions/orderActions';
@@ -7,10 +9,37 @@ import MessageBox from '../components/MessageBox';
 
 export default function OrderScreen(props) {
   const orderId = props.match.params.id;
+  const [sdkReady,setSdkReady] = useState(false); // 30.PayPal Button ekleme dersi
   const orderDetails = useSelector((state) => state.orderDetails);
   const { order, loading, error } = orderDetails;
   const dispatch = useDispatch();
-  useEffect(() => { dispatch(detailsOrder(orderId));}, [dispatch, orderId]);
+  useEffect(() => { 
+    const addPayPalScript = async () => { // 30.PayPal Button ekleme dersi
+      const {data} = await axios.get('/api/config/paypal'); // 30.PayPal Button ekleme dersi
+      const script = document.createElement('script'); // 30.PayPal Button ekleme dersi
+      script.type='text/javascript'; // 30.PayPal Button ekleme dersi
+      script.src=`https://www.paypal.com/sdk/js?client-id=${data}`;// 30.PayPal Button ekleme dersi
+      script.async = true; // 30.PayPal Button ekleme dersi
+      script.onload = () => { // 30.PayPal Button ekleme dersi
+        setSdkReady(true); // 30.PayPal Button ekleme dersi
+      };
+      document.body.appendChild(script);// 30.PayPal Button ekleme dersi
+    };
+    if(!order){ // 30.PayPal Button ekleme dersi
+      dispatch(detailsOrder(orderId)); // 30.PayPal Button ekleme dersi
+    } else{ // 30.PayPal Button ekleme dersi
+      if(!order.isPaid){ // 30.PayPal Button ekleme dersi
+        if(!window.paypal){ // 30.PayPal Button ekleme dersi
+          addPayPalScript(); // 30.PayPal Button ekleme dersi
+        } else{ // 30.PayPal Button ekleme dersi
+          setSdkReady(true); // 30.PayPal Button ekleme dersi
+        }
+      }
+    }
+  }, [dispatch, order,orderId,sdkReady]); // 30.PayPal Button ekleme dersi
+  const successPaymentHandler = () => { // 30.PayPal Button ekleme dersi
+    // TODO: dispatch pay order
+  };
   return loading ? (<LoadingBox/>) : error ? (<MessageBox variant="danger">{error}</MessageBox>) : (
     <div>
       <h1>Order {order._id}</h1>
@@ -116,6 +145,16 @@ export default function OrderScreen(props) {
                   </div>
                 </div>
               </li>
+              {/*30.PayPal Button ekleme dersi*/}
+                {!order.isPaid && ( 
+                  <li>
+                    {!sdkReady ? 
+                    (
+                      <LoadingBox/> ) : ( <PayPalButton amount={order.totalPrice} onSuccess={successPaymentHandler} />
+                    )}
+                  </li>
+                )}
+              {/*-----------------------------*/}
             </ul>
           </div>
         </div>

@@ -23,6 +23,10 @@ app.use('/api/products', productRouter);
 // api/products linkini productRouter'a bağladık
 app.use('/api/orders', orderRouter);
 // api/orders linkini orderRoter'a bağladık
+app.get('/api/config/paypal', (req,res) => {
+    res.send(process.env.PAYPAL_CLIENT_ID || 'sb')
+});
+// 30.PayPal Button ekleme dersi -> 'sb' = sandbox
 
 app.get('/',(req,res) => {
     res.send('Server is ready');
