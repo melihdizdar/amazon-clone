@@ -9,13 +9,14 @@ import MessageBox from '../components/MessageBox';
 import { ORDER_PAY_RESET } from '../constants/orderConstants';
 
 export default function OrderScreen(props) {
+  // 30.PayPal Button ekleme dersi ve 31.Pay Order
   const orderId = props.match.params.id;
   const [sdkReady,setSdkReady] = useState(false); // 30.PayPal Button ekleme dersi
   const orderDetails = useSelector((state) => state.orderDetails);
   const { order, loading, error } = orderDetails;
   
-  const orderPay = useSelector((state) => state.orderPay); // 31.Ders Pay Order
-  const { loading: loadingPay, error: errorPay, success: successPay } = orderPay; // 31.Ders Pay Order
+  const orderPay = useSelector((state) => state.orderPay); // 31.Pay Order
+  const { loading: loadingPay, error: errorPay, success: successPay } = orderPay; // 31.Pay Order
   const dispatch = useDispatch();
   useEffect(() => { 
     const addPayPalScript = async () => { // 30.PayPal Button ekleme dersi
@@ -30,8 +31,8 @@ export default function OrderScreen(props) {
       document.body.appendChild(script);// 30.PayPal Button ekleme dersi
     };
     /*if(!order){ 30.PayPal Button ekleme dersi */
-    if(!order || successPay || (order && order._id !== orderId)){ // 31.Ders Pay Order
-      dispatch({type: ORDER_PAY_RESET}); // 31.Ders Pay Order
+    if(!order || successPay || (order && order._id !== orderId)){ // 31.Pay Order
+      dispatch({type: ORDER_PAY_RESET}); // 31.Pay Order
       dispatch(detailsOrder(orderId)); // 30.PayPal Button ekleme dersi
     } else{ // 30.PayPal Button ekleme dersi
       if(!order.isPaid){ // 30.PayPal Button ekleme dersi
@@ -43,10 +44,10 @@ export default function OrderScreen(props) {
       }
     }
   /* }, [dispatch, order,orderId,sdkReady]); 30.PayPal Button ekleme dersi */
-  }, [dispatch, order,orderId,sdkReady,successPay]); // 31.Ders Pay Order
+  }, [dispatch, order,orderId,sdkReady,successPay]); // 31.Pay Order
   /* const successPaymentHandler = () => {}; // 30.PayPal Button ekleme dersi */
-  const successPaymentHandler = (paymentResult) => { // 31.Ders Pay Order
-    dispatch(payOrder(order,paymentResult)); // 31.Ders Pay Order
+  const successPaymentHandler = (paymentResult) => { // 31.Pay Order
+    dispatch(payOrder(order,paymentResult)); // 31.Pay Order
   };
   return loading ? (<LoadingBox/>) : error ? (<MessageBox variant="danger">{error}</MessageBox>) : (
     <div>

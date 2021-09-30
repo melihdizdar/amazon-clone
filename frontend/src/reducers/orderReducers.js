@@ -29,7 +29,7 @@ export const orderCreateReducer = (state = {}, action) => {
     }
   };
 
-export const orderPayReducer = (state = {}, action) => { // 31.Ders Pay Order
+export const orderPayReducer = (state = {}, action) => { // 31.Pay Order
   switch (action.type) {
     case ORDER_PAY_REQUEST:
       return { loading: true };

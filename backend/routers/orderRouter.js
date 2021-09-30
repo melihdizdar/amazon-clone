@@ -25,7 +25,7 @@ orderRouter.post('/', isAuth, expressAsyncHandler(async(req,res) => {
     }
 }));
 
-orderRouter.get('/mine',isAuth,expressAsyncHandler(async (req, res) => { // 32.Ders Display Orders History
+orderRouter.get('/mine',isAuth,expressAsyncHandler(async (req, res) => { // 32.Display Orders History
   const orders = await Order.find({ user: req.user._id });
   res.send(orders);})
 );
@@ -41,7 +41,7 @@ orderRouter.get('/:id',isAuth,expressAsyncHandler(async (req, res) => {
 );
 
 orderRouter.put('/:id/pay'),isAuth,expressAsyncHandler(async (req,res) => {
-  // 31.Ders burda order işlemi yapılınca olan kullanılacak değerlerin tanımlamaları yapıldı
+  // 31.burda order işlemi yapılınca olan kullanılacak değerlerin tanımlamaları yapıldı
   const order = await Order.findById(req.params.id);
   if (order) {
     order.isPaid = true;

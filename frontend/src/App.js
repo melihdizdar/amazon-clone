@@ -12,6 +12,7 @@ import PaymentMethodScreen from "./screens/PaymentMethodScreen";
 import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 import OrderScreen from './screens/OrderScreen';
 import OrderHistoryScreen from './screens/OrderHistoryScreen';
+import ProfileScreen from "./screens/ProfileScreen";
 
 function App() {
   //Değişkenleri tanımladığımız kod satırı.
@@ -45,7 +46,10 @@ function App() {
                         </Link>
                         <ul className="dropdown-content">
                           <li>
-                            <Link to="/orderhistory">Order History</Link> {/*32.Ders Display Orders History*/}
+                            <Link to="/profile">User Profile</Link> {/*33.display user profile*/}
+                          </li>
+                          <li>
+                            <Link to="/orderhistory">Order History</Link> {/*32.Display Orders History*/}
                           </li>
                           <li>
                             <Link to="#signout" onClick={signoutHandler}>
@@ -70,6 +74,7 @@ function App() {
             <Route path="/placeorder" component={PlaceOrderScreen}/>
             <Route path="/order/:id" component={OrderScreen}/>
             <Route path="/orderhistory" component={OrderHistoryScreen}/>
+            <Route path="/profile" component={ProfileScreen}/>
             <Route path="/" component={HomeScreen} exact/>
           </main>
           <footer className="row center">All right reserved</footer>

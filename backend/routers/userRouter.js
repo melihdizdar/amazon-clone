@@ -48,4 +48,13 @@ userRouter.post('/register', expressAsyncHandler(async (req, res) => {
     })
   );
 
+userRouter.get('/:id', expressAsyncHandler(async(req,res) => { // 33.ders display user profile
+  const user = await User.findById(req.params.id);
+  if(user) {
+    res.send(user);
+  } else {
+    res.status(404).send({message: 'User Not Found'});
+  }
+}));
+
 export default userRouter;

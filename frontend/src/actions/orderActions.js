@@ -44,7 +44,7 @@ export const detailsOrder = (orderId) => async (dispatch, getState) => {
   }
 };
 
-// 31.Ders Pay Order
+// 31.Pay Order
 export const payOrder = (order, paymentResult) => async (dispatch,getState) => {
   dispatch({ type: ORDER_PAY_REQUEST, payload: { order, paymentResult } });
   const {userSignin: { userInfo },} = getState();
@@ -59,7 +59,7 @@ export const payOrder = (order, paymentResult) => async (dispatch,getState) => {
   }
 };
 
-// 32.Ders Display Orders History
+// 32.Display Orders History
 export const listOrderMine = () => async (dispatch, getState) => {
   dispatch({ type: ORDER_MINE_LIST_REQUEST });
   const {

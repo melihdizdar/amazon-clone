@@ -12,3 +12,7 @@ export const USER_REGISTER_FAIL = 'USER_REGISTER_FAIL';
 
 /* Kayıt işleminde 4 farklı durum için tanımlama yapıldı.
 Talep,Başarılı kayıt,Başarısız kayıt durumu */
+
+export const USER_DETAILS_REQUEST = 'USER_DETAILS_REQUEST';
+export const USER_DETAILS_SUCCESS = 'USER_DETAILS_SUCCESS';
+export const USER_DETAILS_FAIL = 'USER_DETAILS_FAIL';
