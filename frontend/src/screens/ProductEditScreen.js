@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import {useDispatch, useSelector} from 'react-redux';
-import { detailsProduct } from '../actions/productActions';
+import { detailsProduct, updateProduct } from '../actions/productActions';
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
+import { PRODUCT_UPDATE_RESET } from '../constants/productConstants';
 
 export default function ProductEditScreen(props) {
     const productId = props.match.params.id; //38.build product edit screen
@@ -16,9 +17,16 @@ export default function ProductEditScreen(props) {
 
     const productDetails = useSelector((state) => state.productDetails); //38.build product edit screen
     const { loading,error,product } = productDetails; //38.build product edit screen
+    const productUpdate = useSelector((state) => state.productUpdate); //39.update product
+    const {loading: loadingUpdate,error: errorUpdate,success: successUpdate,} = productUpdate; //39.update product
     const dispatch = useDispatch(); //38.build product edit screen
     useEffect(() => { //38.build product edit screen
-        if(!product || (product._id !== productId)) { //38.build product edit screen
+        //if(!product || (product._id !== productId)) { //38.build product edit screen
+        if (successUpdate) {
+            props.history.push('/productlist'); //39.update product
+        }
+        if (!product || product._id !== productId || successUpdate) { //39.update product
+            dispatch({ type: PRODUCT_UPDATE_RESET }); //39.update product
             dispatch(detailsProduct(productId)); //38.build product edit screen    
         } else {
             setName(product.name); //38.build product edit screen
@@ -29,10 +37,11 @@ export default function ProductEditScreen(props) {
             setBrand(product.brand); //38.build product edit screen
             setDescription(product.description); //38.build product edit screen
         }
-    }, [product,dispatch,productId]); //38.build product edit screen
+    }, [product, dispatch, productId, successUpdate, props.history]); //39.update product
+    //}, [product,dispatch,productId]); //38.build product edit screen
     const submitHandler = (e) => { //38.build product edit screen
         e.preventDefault(); //38.build product edit screen
-        // dispatch update product
+        dispatch(updateProduct({_id: productId,name,price,image,category,brand,coutInStock,description,})); //39.update product
     };
     return (
         <div>
@@ -40,6 +49,8 @@ export default function ProductEditScreen(props) {
                 <div>
                 <h1>Edit Product {productId}</h1>
                 </div>
+                {loadingUpdate && <LoadingBox></LoadingBox>}
+                {errorUpdate && <MessageBox variant="danger">{errorUpdate}</MessageBox>}
                 {loading ? (<LoadingBox/>) : error ? (<MessageBox variant="danger">{error}</MessageBox>) : 
                 (
                     <>

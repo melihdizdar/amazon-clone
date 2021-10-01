@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createProduct, listProducts } from '../actions/productActions';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
-import { PRODUCTS_CREATE_RESET } from '../constants/productConstants';
+import { PRODUCT_CREATE_RESET } from '../constants/productConstants';
 
 export default function ProductListScreen(props) {
   const productList = useSelector((state) => state.productList); // 36.list products
@@ -13,7 +13,7 @@ export default function ProductListScreen(props) {
   const dispatch = useDispatch();  // 36.list products
   useEffect(() => { // 36.list products
     if(successCreate){ //37.create product
-      dispatch({type:PRODUCTS_CREATE_RESET}); //37.create product
+      dispatch({type:PRODUCT_CREATE_RESET}); //37.create product
       props.history.push(`/product/${createdProduct._id}/edit`); //37.create product
     }
     dispatch(listProducts()); // 36.list products
