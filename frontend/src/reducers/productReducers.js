@@ -29,7 +29,8 @@ export const productListReducer = (state = { loading:true, products:[] },action)
     }
 }
 
-export const productDetailsReducer = (state = {product:{},loading:true},action) => {
+//export const productDetailsReducer = (state = {product:{},loading:true},action) => {
+export const productDetailsReducer = (state = {loading:true},action) => { //38.build product edit screen
     /*
         Ürüne tıklanıldığı zaman ürün detayları sayfası gelirken öncesinde yükleme ekranının geleceğini,
         başarılı olduğu taktirde loading ekranının gelmeyip ürünlerin detay sayfasına girileceğini,
