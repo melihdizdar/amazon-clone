@@ -13,3 +13,8 @@ export const PRODUCTS_DETAILS_FAIL = 'PRODUCTS_DETAILS_FAIL';
 /*
     Ürünlerin detay listesini talep,başarılı ve başarısız olarak tanımladık.
 */
+
+export const PRODUCTS_CREATE_REQUEST = 'PRODUCTS_CREATE_REQUEST';
+export const PRODUCTS_CREATE_SUCCESS = 'PRODUCTS_CREATE_SUCCESS';
+export const PRODUCTS_CREATE_FAIL = 'PRODUCTS_CREATE_FAIL';
+export const PRODUCTS_CREATE_RESET = 'PRODUCTS_CREATE_RESET';

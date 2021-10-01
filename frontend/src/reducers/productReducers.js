@@ -5,6 +5,10 @@ const{
     PRODUCTS_DETAILS_REQUEST,
     PRODUCTS_DETAILS_SUCCESS,
     PRODUCTS_DETAILS_FAIL,
+    PRODUCTS_CREATE_REQUEST,
+    PRODUCTS_CREATE_SUCCESS,
+    PRODUCTS_CREATE_FAIL,
+    PRODUCTS_CREATE_RESET,
 } = require('../constants/productConstants');
 
 export const productListReducer = (state = { loading:true, products:[] },action) => {
@@ -38,6 +42,21 @@ export const productDetailsReducer = (state = {product:{},loading:true},action) 
             return{loading:false,product:action.payload};
         case PRODUCTS_DETAILS_FAIL:
             return {loading:false,error: action.payload}
+        default:
+            return state
+    }
+};
+
+export const productCreateReducer = (state = {},action) => { //37.create product
+    switch(action.type){
+        case PRODUCTS_CREATE_REQUEST:
+            return {loading:true};
+        case PRODUCTS_CREATE_SUCCESS:
+            return{loading:false,success:true,product:action.payload};
+        case PRODUCTS_CREATE_FAIL:
+            return {loading:false, error: action.payload}
+        case PRODUCTS_CREATE_RESET:
+            return {}
         default:
             return state
     }
