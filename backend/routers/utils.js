@@ -33,3 +33,11 @@ export const isAuth = (req,res,next) => {
         res.status(401).send({message:'No Token'});
     }
 }
+
+export const isAdmin = (req,res,next) => { //35.create admin view
+    if(req.user && req.user.isAdmin){
+        next();
+    } else {
+        res.status(401).send({message:'Invalid Admin Token'});
+    }
+}
