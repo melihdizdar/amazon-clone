@@ -14,6 +14,8 @@ import OrderScreen from './screens/OrderScreen';
 import OrderHistoryScreen from './screens/OrderHistoryScreen';
 import ProfileScreen from "./screens/ProfileScreen";
 import PrivateRoute from "./components/PrivateRoute";
+import AdminRoute from "./components/AdminRoute";
+import ProductListScreen from "./screens/ProductListScreen";
 
 function App() {
   //Değişkenleri tanımladığımız kod satırı.
@@ -95,6 +97,7 @@ function App() {
             <Route path="/order/:id" component={OrderScreen}/>
             <Route path="/orderhistory" component={OrderHistoryScreen}/>
             <PrivateRoute path="/profile" component={ProfileScreen}/>
+            <AdminRoute path="/productlist" component={ProductListScreen}/>
             <Route path="/" component={HomeScreen} exact/>
           </main>
           <footer className="row center">All right reserved</footer>
