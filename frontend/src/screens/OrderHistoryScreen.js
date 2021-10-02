@@ -16,10 +16,8 @@ export default function OrderHistoryScreen(props) {
     <div>
       <h1>Order History</h1>
       {loading ? (
-        <LoadingBox></LoadingBox>
-      ) : error ? (
-        <MessageBox variant="danger">{error}</MessageBox>
-      ) : (
+        <LoadingBox/>) : error ? (<MessageBox variant="danger">{error}</MessageBox>) : 
+      (
         <table className="table">
           <thead>
             <tr>

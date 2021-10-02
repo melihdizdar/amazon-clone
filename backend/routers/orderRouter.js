@@ -1,9 +1,15 @@
 import express from "express";
 import expressAsyncHandler from "express-async-handler";
 import Order from "../models/orderModel.js";
-import { isAuth } from "./utils.js";
+import { isAdmin, isAuth } from "./utils.js";
 
 const orderRouter = express.Router();
+
+orderRouter.get('/',isAuth,isAdmin,expressAsyncHandler(async (req, res) => { //42.list orders
+    const orders = await Order.find({}).populate('user', 'name');
+    res.send(orders);
+  })
+);
 
 orderRouter.post('/', isAuth, expressAsyncHandler(async(req,res) => {
     if(req.body.orderItems.length === 0){
