@@ -1,9 +1,11 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import path from 'path';
 import productRouter from './routers/productRouter.js';
 import userRouter from './routers/userRouter.js';
 import orderRouter from './routers/orderRouter.js';
+import uploadRouter from './routers/uploadRouter.js';
 
 dotenv.config(); //token
 
@@ -17,6 +19,7 @@ mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost/amazon',{
     useUnifiedTopology: true,
     useNewUrlParser: true
 });
+app.use('/api/uploads', uploadRouter); //40.upload product image
 app.use('/api/users', userRouter);
 // api/users linkini userRouter'a bağladık
 app.use('/api/products', productRouter);
@@ -27,7 +30,8 @@ app.get('/api/config/paypal', (req,res) => {
     res.send(process.env.PAYPAL_CLIENT_ID || 'sb')
 });
 // 30.PayPal Button ekleme dersi -> 'sb' = sandbox
-
+const __dirname = path.resolve(); //40.upload product image
+app.use('/uploads', express.static(path.join(__dirname, '/uploads'))); //40.upload product image
 app.get('/',(req,res) => {
     res.send('Server is ready');
     {/*npm start dedikten sonra http://localhost:5000 linkine girdiğin zaman backendin açıldığına dair gelecek yazı */}

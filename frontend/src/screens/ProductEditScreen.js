@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {useDispatch, useSelector} from 'react-redux';
+import axios from 'axios';
 import { detailsProduct, updateProduct } from '../actions/productActions';
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
@@ -43,6 +44,30 @@ export default function ProductEditScreen(props) {
         e.preventDefault(); //38.build product edit screen
         dispatch(updateProduct({_id: productId,name,price,image,category,brand,coutInStock,description,})); //39.update product
     };
+    const [loadingUpload, setLoadingUpload] = useState(false); //40.upload product image
+    const [errorUpload, setErrorUpload] = useState(''); //40.upload product image
+  
+    const userSignin = useSelector((state) => state.userSignin); //40.upload product image
+    const { userInfo } = userSignin; //40.upload product image
+    const uploadFileHandler = async (e) => { //40.upload product image
+      const file = e.target.files[0]; //40.upload product image
+      const bodyFormData = new FormData(); //40.upload product image
+      bodyFormData.append('image', file); //40.upload product image
+      setLoadingUpload(true); //40.upload product image
+      try {
+        const { data } = await axios.post('/api/uploads', bodyFormData, { //40.upload product image
+          headers: { //40.upload product image
+            'Content-Type': 'multipart/form-data', //40.upload product image
+            Authorization: `Bearer ${userInfo.token}`, //40.upload product image
+          },
+        });
+        setImage(data); //40.upload product image
+        setLoadingUpload(false); //40.upload product image
+      } catch (error) { //40.upload product image
+        setErrorUpload(error.message); //40.upload product image
+        setLoadingUpload(false); //40.upload product image
+      }
+    };
     return (
         <div>
             <form className="form" onSubmit={submitHandler}>
@@ -65,6 +90,12 @@ export default function ProductEditScreen(props) {
                         <div>
                             <label htmlFor="image">Image</label>
                             <input id="image" type="text" placeholder="Enter image" value={image} onChange={(e) => setImage(e.target.value)}></input>
+                        </div>
+                        <div>
+                            <label htmlFor="imageFile">Image File</label>
+                            <input type="file" id="imageFile" label="Choose Image" onChange={uploadFileHandler}></input>
+                            {loadingUpload && <LoadingBox></LoadingBox>}{errorUpload && (
+                            <MessageBox variant="danger">{errorUpload}</MessageBox>)}
                         </div>
                         <div>
                             <label htmlFor="category">Category</label>
