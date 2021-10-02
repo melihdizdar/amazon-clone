@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { PayPalButton } from 'react-paypal-button-v2';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { detailsOrder, payOrder } from '../actions/orderActions';
+import { deliverOrder, detailsOrder, payOrder } from '../actions/orderActions';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
-import { ORDER_PAY_RESET } from '../constants/orderConstants';
+import { ORDER_DELIVER_RESET, ORDER_PAY_RESET } from '../constants/orderConstants';
 
 export default function OrderScreen(props) {
   // 30.PayPal Button ekleme dersi ve 31.Pay Order
@@ -14,9 +14,13 @@ export default function OrderScreen(props) {
   const [sdkReady,setSdkReady] = useState(false); // 30.PayPal Button ekleme dersi
   const orderDetails = useSelector((state) => state.orderDetails);
   const { order, loading, error } = orderDetails;
+  const userSignin = useSelector((state) => state.userSignin); //44.Deliver order
+  const { userInfo } = userSignin; //44.Deliver order
   
   const orderPay = useSelector((state) => state.orderPay); // 31.Pay Order
   const { loading: loadingPay, error: errorPay, success: successPay } = orderPay; // 31.Pay Order
+  const orderDeliver = useSelector((state) => state.orderPay); // 44.deliver order
+  const { loading: loadingDeliver, error: errorDeliver, success: successDeliver } = orderDeliver; // 44.deliver order
   const dispatch = useDispatch();
   useEffect(() => { 
     const addPayPalScript = async () => { // 30.PayPal Button ekleme dersi
@@ -31,8 +35,10 @@ export default function OrderScreen(props) {
       document.body.appendChild(script);// 30.PayPal Button ekleme dersi
     };
     /*if(!order){ 30.PayPal Button ekleme dersi */
-    if(!order || successPay || (order && order._id !== orderId)){ // 31.Pay Order
+    //if(!order || successPay || (order && order._id !== orderId)){ // 31.Pay Order
+      if(!order || successPay || successDeliver || (order && order._id !== orderId)){ //44.deliver order
       dispatch({type: ORDER_PAY_RESET}); // 31.Pay Order
+      dispatch({type: ORDER_DELIVER_RESET}); //44.deliver order
       dispatch(detailsOrder(orderId)); // 30.PayPal Button ekleme dersi
     } else{ // 30.PayPal Button ekleme dersi
       if(!order.isPaid){ // 30.PayPal Button ekleme dersi
@@ -44,10 +50,14 @@ export default function OrderScreen(props) {
       }
     }
   /* }, [dispatch, order,orderId,sdkReady]); 30.PayPal Button ekleme dersi */
-  }, [dispatch, order,orderId,sdkReady,successPay]); // 31.Pay Order
+  //}, [dispatch, order,orderId,sdkReady,successPay]); // 31.Pay Order
+    }, [dispatch, order,orderId,sdkReady,successPay,successDeliver]); //44.Deliver order
   /* const successPaymentHandler = () => {}; // 30.PayPal Button ekleme dersi */
   const successPaymentHandler = (paymentResult) => { // 31.Pay Order
     dispatch(payOrder(order,paymentResult)); // 31.Pay Order
+  };
+  const deliverHandler = () => { //44.Deliver order
+    dispatch(deliverOrder(order._id)); //44.Deliver order
   };
   return loading ? (<LoadingBox/>) : error ? (<MessageBox variant="danger">{error}</MessageBox>) : (
     <div>
@@ -115,6 +125,13 @@ export default function OrderScreen(props) {
                       </div>
                     </li>
                   ))}
+                  {loadingDeliver && <LoadingBox/>}
+                  {errorDeliver && <MessageBox variant="danger">{errorDeliver}</MessageBox>}
+                  {userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                    <li>
+                      <button type="button" className="primary block" onClick={deliverHandler}>Deliver Order</button>
+                    </li>
+                  )}
                 </ul>
               </div>
             </li>
