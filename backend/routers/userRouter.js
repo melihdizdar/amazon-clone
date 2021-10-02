@@ -97,4 +97,21 @@ userRouter.delete('/:id',isAuth,isAdmin,expressAsyncHandler(async (req, res) => 
   })
 );
 
+userRouter.put('/:id',isAuth,isAdmin,expressAsyncHandler(async (req, res) => { //48.Edit Users
+    const user = await User.findById(req.params.id);
+    if (user) {
+      user.name = req.body.name || user.name;
+      user.email = req.body.email || user.email;
+      user.isSeller = req.body.isSeller === user.isSeller ? user.isSeller : req.body.isSeller;
+      user.isAdmin = req.body.isAdmin === user.isAdmin ? user.isAdmin : req.body.isAdmin;
+      //user.isSeller = req.body.isSeller || user.isSeller; => check buttonlar güncellendikten sonra tekrardan değiştirilemiyor
+      //user.isAdmin = req.body.isAdmin || user.isAdmin; => check buttonlar güncellendikten sonra tekrardan değiştirilemiyor
+      const updatedUser = await user.save();
+      res.send({ message: 'User Updated', user: updatedUser });
+    } else {
+      res.status(404).send({ message: 'User Not Found' });
+    }
+  })
+);
+
 export default userRouter;
