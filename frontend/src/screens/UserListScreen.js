@@ -1,19 +1,30 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { listUsers } from '../actions/userActions';
+import { deleteUser, listUsers } from '../actions/userActions';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 
 export default function UserListScreen() {
   const userList = useSelector((state) => state.userList); //46.list users
   const { loading, error, users } = userList; //46.list users
+  const userDelete = useSelector((state) => state.userDelete); //47.delete user
+  const {loading: loadingDelete,error: errorDelete,success: successDelete,} = userDelete; //47.delete user
   const dispatch = useDispatch(); //46.list users
   useEffect(() => { //46.list users
     dispatch(listUsers()); //46.list users
-  }, [dispatch]); //46.list users
+  //}, [dispatch]); //46.list users
+  }, [dispatch, successDelete]); //47.delete user
+  const deleteHandler = (user) => { //47.delete user
+    if (window.confirm('Are you sure?')) { //47.delete user
+      dispatch(deleteUser(user._id)); //47.delete user
+    }
+  };
   return (
     <div>
       <h1>Users</h1>
+      {loadingDelete && <LoadingBox/>}
+      {errorDelete && <MessageBox variant="danger">{errorDelete}</MessageBox>}
+      {successDelete && (<MessageBox variant="success">User Deleted Successfully</MessageBox>)}
       {loading ? (<LoadingBox/>) : error ? (  <MessageBox variant="danger">{error}</MessageBox>) : (
         <table className="table">
           <thead>
@@ -35,8 +46,8 @@ export default function UserListScreen() {
                 <td>{user.isSeller ? 'YES' : ' NO'}</td>
                 <td>{user.isAdmin ? 'YES' : 'NO'}</td>
                 <td>
-                  <button>Edit</button>
-                  <button>Delete</button>
+                  <button type="button" className="small">Edit</button>
+                  <button type="button" className="small" onClick={() => deleteHandler(user)}>Delete</button>
                 </td>
               </tr>
             ))}
