@@ -1,23 +1,32 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { listOrders } from '../actions/orderActions';
+import { deleteOrder, listOrders } from '../actions/orderActions';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
+import { ORDER_DELETE_RESET } from '../constants/orderConstants';
 
 export default function OrderListScreen(props) {
     const orderList = useSelector((state) => state.orderList); //42.list orders
     const { loading,error,orders } = orderList; //42.list orders
+    const orderDelete = useSelector((state) => state.orderDelete); //43.delete order
+    const { loading:loadingDelete , error: errorDelete , success:successDelete,} = orderDelete; //43.delete order
     const dispatch = useDispatch(); //42.list orders
     useEffect(() => { //42.list orders
+        dispatch({type: ORDER_DELETE_RESET}); //43.delete order
         dispatch(listOrders()); //42.list orders
-    }, [dispatch]); //42.list orders
+    }, [dispatch, successDelete]);
+    //}, [dispatch]); //42.list orders
     const deleteHandler = (order) => { //42.list orders
-        //delete handler
+        if(window.confirm('Are you sure to delete?')){ //43.delete order
+            dispatch(deleteOrder(order._id)); //43.delete order
+        }
     };
     return (
         <div>
             <div>
             <h1>Orders</h1>
+            {loadingDelete && <LoadingBox/>}
+            {errorDelete && <MessageBox variant="danger">{errorDelete}</MessageBox>} 
             {loading ? (<LoadingBox/>) : error ? (<MessageBox variant="danger">{error}</MessageBox>) : 
             (
                 <table className="table">
