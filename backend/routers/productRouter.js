@@ -2,13 +2,16 @@ import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import data from '../data.js';
 import Product from '../models/productModel.js';
-import { isAuth , isAdmin } from './utils.js';
+import { isAuth , isAdmin , isSellerOrAdmin  } from './utils.js';
 
 const productRouter = express.Router();
 
 productRouter.get('/', expressAsyncHandler(async (req,res) =>{
     //Products listelenmesi için kullanılan kod satırı
-    const products = await Product.find({});
+    //const products = await Product.find({});
+    const seller = req.query.seller || ''; //49.Implement Seller View
+    const sellerFilter = seller ? { seller } : {}; //49.Implement Seller View
+    const products = await Product.find({ ...sellerFilter }); //49.Implement Seller View
     res.send(products);
 }));
 
@@ -30,9 +33,11 @@ productRouter.get('/:id',expressAsyncHandler(async(req,res) =>{
     }
 }))
 
-productRouter.post('/', isAuth, isAdmin, expressAsyncHandler(async(req,res) => { //37.create product
+//productRouter.post('/', isAuth, isAdmin, expressAsyncHandler(async(req,res) => { //37.create product
+productRouter.post('/', isAuth, isSellerOrAdmin, expressAsyncHandler(async(req,res) => {  //49.Implement Seller View
     const product = new Product({
         name:'sample name' + Date.now(),
+        seller: req.user._id, //49.Implement Seller View
         image: '/images/p1.jpg',
         price: 0,
         category:'sample category',
@@ -46,7 +51,8 @@ productRouter.post('/', isAuth, isAdmin, expressAsyncHandler(async(req,res) => {
     res.send({message:'Product Created', product: createdProduct});
 }));
 
-productRouter.put('/:id',isAuth,isAdmin,expressAsyncHandler(async (req, res) => { //39.update product
+//productRouter.put('/:id',isAuth,isAdmin,expressAsyncHandler(async (req, res) => { //39.update product
+productRouter.put('/:id',isAuth,isSellerOrAdmin,expressAsyncHandler(async (req, res) => { //49.Implement Seller View
       const productId = req.params.id;
       const product = await Product.findById(productId);
       if (product) {

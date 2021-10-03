@@ -14,6 +14,7 @@ export const addToCart = (productId,qty) => async(dispatch,getState) =>{
             price: data.price,
             coutInStock: data.coutInStock,
             product: data._id,
+            seller: data.seller, //49.Implement Seller View
             qty,
         },
     });

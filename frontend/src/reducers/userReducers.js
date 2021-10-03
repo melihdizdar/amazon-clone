@@ -59,7 +59,7 @@ export const userUpdateProfileReducer = (state = {}, action) => { //34.uptade us
   }
 };
 
-export const userUpdateReducer = (state = { loading: true }, action) => { //48.Edit User
+export const userUpdateReducer = (state = {}, action) => { //48.Edit User
   switch (action.type) {
     case USER_UPDATE_REQUEST:
       return { loading: true };
@@ -68,7 +68,7 @@ export const userUpdateReducer = (state = { loading: true }, action) => { //48.E
     case USER_UPDATE_FAIL:
       return { loading: false, error: action.payload };
     case USER_UPDATE_RESET:
-      return { loading: true };
+      return {};
     default:
       return state;
   }

@@ -1,12 +1,16 @@
 import express from "express";
 import expressAsyncHandler from "express-async-handler";
 import Order from "../models/orderModel.js";
-import { isAdmin, isAuth } from "./utils.js";
+import { isAdmin, isAuth, isSellerOrAdmin } from "./utils.js";
 
 const orderRouter = express.Router();
 
-orderRouter.get('/',isAuth,isAdmin,expressAsyncHandler(async (req, res) => { //42.list orders
-    const orders = await Order.find({}).populate('user', 'name');
+//orderRouter.get('/',isAuth,isAdmin,expressAsyncHandler(async (req, res) => { //42.list orders
+orderRouter.get('/',isAuth,isSellerOrAdmin,expressAsyncHandler(async (req, res) => { //49.Implement Seller View
+    //const orders = await Order.find({}).populate('user', 'name');
+    const seller = req.query.seller || ''; //49.Implement Seller View
+    const sellerFilter = seller ? { seller } : {}; //49.Implement Seller View
+    const orders = await Order.find({ ...sellerFilter }).populate('user','name'); //49.Implement Seller View
     res.send(orders);
   })
 );
@@ -17,6 +21,7 @@ orderRouter.post('/', isAuth, expressAsyncHandler(async(req,res) => {
     }
     else {
         const order = new Order({
+            seller: req.body.orderItems[0].seller, //49.Implement Seller View
             orderItems: req.body.orderItems,
             shippingAddress: req.body.shippingAddress,
             paymentMethod: req.body.paymentMethod,

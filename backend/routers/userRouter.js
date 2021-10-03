@@ -24,6 +24,7 @@ userRouter.post('/signin', expressAsyncHandler(async (req,res) =>{
                 name: user.name,
                 email : user.email,
                 isAdmin: user.isAdmin,
+                isSeller: user.isSeller, //49.Implement Seller View
                 token: generateToken(user),
             });
             return;
@@ -43,6 +44,7 @@ userRouter.post('/register', expressAsyncHandler(async (req, res) => {
         name: createdUser.name,
         email: createdUser.email,
         isAdmin: createdUser.isAdmin,
+        isSeller: user.isSeller, //49.Implement Seller View
         token: generateToken(createdUser),
       });
     })
@@ -62,6 +64,11 @@ userRouter.put('/profile',isAuth,expressAsyncHandler(async (req, res) => { //34.
     if (user) {
       user.name = req.body.name || user.name;
       user.email = req.body.email || user.email;
+    if (user.isSeller) { //49.Implement Seller View
+      user.seller.name = req.body.sellerName || user.seller.name; //49.Implement Seller View
+      user.seller.logo = req.body.sellerLogo || user.seller.logo; //49.Implement Seller View
+      user.seller.description = req.body.sellerDescription || user.seller.description; //49.Implement Seller View
+    }
     if (req.body.password) {
         user.password = bcrypt.hashSync(req.body.password, 8);
       }
@@ -71,6 +78,7 @@ userRouter.put('/profile',isAuth,expressAsyncHandler(async (req, res) => { //34.
         name: updatedUser.name,
         email: updatedUser.email,
         isAdmin: updatedUser.isAdmin,
+        isSeller: user.isSeller, //49.Implement Seller View
         token: generateToken(updatedUser),
       });
     }

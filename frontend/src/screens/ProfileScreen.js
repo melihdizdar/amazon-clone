@@ -10,6 +10,11 @@ export default function ProfileScreen() {
   const [email, setEmail] = useState(''); //34.uptade user profile
   const [password, setPassword] = useState(''); //34.uptade user profile
   const [confirmPassword, setConfirmPassword] = useState(''); //34.uptade user profile
+
+  const [sellerName, setSellerName] = useState(''); //49.Implement Seller View
+  const [sellerLogo, setSellerLogo] = useState(''); //49.Implement Seller View
+  const [sellerDescription, setSellerDescription] = useState(''); //49.Implement Seller View
+
   const userSignin = useSelector((state) => state.userSignin); //33.display user profile
   const { userInfo } = userSignin; //33.display user profile
   const userDetails = useSelector((state) => state.userDetails); //33.display user profile
@@ -24,6 +29,11 @@ export default function ProfileScreen() {
     } else { //34.uptade user profile
       setName(user.name); //34.uptade user profile
       setEmail(user.email); //34.uptade user profile
+      if (user.seller) { //49.Implement Seller View
+        setSellerName(user.seller.name); //49.Implement Seller View
+        setSellerLogo(user.seller.logo); //49.Implement Seller View
+        setSellerDescription(user.seller.description); //49.Implement Seller View
+      }
     }
   }, [dispatch, userInfo._id, user]); //34.uptade user profile
   //  dispatch(detailsUser(userInfo._id)); //33.display user profile
@@ -33,7 +43,9 @@ export default function ProfileScreen() {
     if (password !== confirmPassword) { //34.update user profile
       alert('Password and Confirm Password Are Not Matched'); //34.update user profile
     } else { //34.update user profile
-      dispatch(updateUserProfile({ userId: user._id, name, email, password })); //34.update user profile
+      //dispatch(updateUserProfile({ userId: user._id, name, email, password })); //34.update user profile
+      dispatch(
+        updateUserProfile({userId: user._id,name,email,password,sellerName,sellerLogo,sellerDescription,})); //49.Implement Seller View
     }
   };
   return (
@@ -64,6 +76,23 @@ export default function ProfileScreen() {
               <label htmlFor="confirmPassword">Confirm Password</label>
               <input id="confirmPassword" type="password" placeholder="Enter confirm password" onChange={(e) => setConfirmPassword(e.target.value)}></input>
             </div>
+            {user.isSeller && (
+              <>
+                <h2>Seller</h2>
+                <div>
+                  <label htmlFor="sellerName">Seller Name</label>
+                  <input id="sellerName" type="text" placeholder="Enter Seller Name" value={sellerName} onChange={(e) => setSellerName(e.target.value)} ></input>
+                </div>
+                <div>
+                  <label htmlFor="sellerLogo">Seller Logo</label>
+                  <input id="sellerLogo" type="text" placeholder="Enter Seller Logo" value={sellerLogo} onChange={(e) => setSellerLogo(e.target.value)} ></input>
+                </div>
+                <div>
+                  <label htmlFor="sellerDescription">Seller Description</label>
+                  <input id="sellerDescription" type="text" placeholder="Enter Seller Description" value={sellerDescription} onChange={(e) => setSellerDescription(e.target.value)}></input>
+                </div>
+              </>
+            )}
             <div>
               <label />
               <button className="primary" type="submit">Update</button>

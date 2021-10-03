@@ -6,12 +6,15 @@ import MessageBox from '../components/MessageBox';
 import { PRODUCT_CREATE_RESET, PRODUCT_DELETE_RESET } from '../constants/productConstants';
 
 export default function ProductListScreen(props) {
+  const sellerMode = props.match.path.indexOf('/seller') >= 0;
   const productList = useSelector((state) => state.productList); // 36.list products
   const { loading, error, products } = productList; // 36.list products
   const productCreate = useSelector((state) => state.productCreate); //37.create product
   const { loading:loadingCreate, error: errorCreate, success:successCreate, product:createdProduct } = productCreate; //37.create product
   const productDelete = useSelector((state) => state.productDelete); //41.delete product
   const {loading: loadingDelete,error: errorDelete,success: successDelete,} = productDelete; //41.delete product
+  const userSignin = useSelector((state) => state.userSignin); //49.Implement Seller View
+  const { userInfo } = userSignin; //49.Implement Seller View
   const dispatch = useDispatch();  // 36.list products
   useEffect(() => { // 36.list products
     if(successCreate){ //37.create product
@@ -21,8 +24,10 @@ export default function ProductListScreen(props) {
     if (successDelete) { //41.delete product
       dispatch({ type: PRODUCT_DELETE_RESET }); //41.delete product
     }
-    dispatch(listProducts()); // 36.list products
-  }, [createdProduct, dispatch, props.history, successCreate, successDelete]); //41.delete product
+    dispatch(listProducts({ seller: sellerMode ? userInfo._id : '' })); //49.Implement Seller View
+  }, [createdProduct,dispatch,props.history,sellerMode,successCreate,successDelete,userInfo._id]); //49.Implement Seller View
+    //dispatch(listProducts()); // 36.list products
+  //}, [createdProduct, dispatch, props.history, successCreate, successDelete]); //41.delete product
   //}, [createdProduct,dispatch,props.history,successCreate]); //37.create product
   //}, [dispatch]); // 36.list products
   const deleteHandler = (product) => { // 36.list products

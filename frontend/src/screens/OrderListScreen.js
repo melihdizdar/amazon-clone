@@ -6,15 +6,20 @@ import MessageBox from '../components/MessageBox';
 import { ORDER_DELETE_RESET } from '../constants/orderConstants';
 
 export default function OrderListScreen(props) {
+    const sellerMode = props.match.path.indexOf('/seller') >= 0; //49.Implement Seller View
     const orderList = useSelector((state) => state.orderList); //42.list orders
     const { loading,error,orders } = orderList; //42.list orders
     const orderDelete = useSelector((state) => state.orderDelete); //43.delete order
     const { loading:loadingDelete , error: errorDelete , success:successDelete,} = orderDelete; //43.delete order
+    const userSignin = useSelector((state) => state.userSignin); //49.Implement Seller View
+    const { userInfo } = userSignin; //49.Implement Seller View
     const dispatch = useDispatch(); //42.list orders
     useEffect(() => { //42.list orders
         dispatch({type: ORDER_DELETE_RESET}); //43.delete order
-        dispatch(listOrders()); //42.list orders
-    }, [dispatch, successDelete]);
+        dispatch(listOrders({ seller: sellerMode ? userInfo._id : '' })); //49.Implement Seller View
+    }, [dispatch, sellerMode, successDelete, userInfo._id]); //49.Implement Seller View
+        //dispatch(listOrders()); //42.list orders
+    //}, [dispatch, successDelete]);
     //}, [dispatch]); //42.list orders
     const deleteHandler = (order) => { //42.list orders
         if(window.confirm('Are you sure to delete?')){ //43.delete order
@@ -54,8 +59,7 @@ export default function OrderListScreen(props) {
                         </td>
                         <td>
                             <button type="button" className="small" onClick={() => { 
-                            props.history.push(`/order/${order._id}`);
-                            }}>
+                            props.history.push(`/order/${order._id}`);}}>
                             Details
                             </button>
                             <button type="button" className="small" onClick={() => deleteHandler(order)}>

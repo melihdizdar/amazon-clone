@@ -12,7 +12,8 @@ export default function HomeScreen() {
   const {loading,error,products} = productList;
 
   useEffect(() =>{
-    dispatch(listProducts());
+    //dispatch(listProducts());
+    dispatch(listProducts({})); //49.Implement Seller View
   }, [dispatch]);
     return (
         <div>
