@@ -2,12 +2,14 @@ import { PRODUCTS_DETAILS_FAIL, PRODUCTS_DETAILS_SUCCESS,PRODUCTS_DETAILS_REQUES
 import axios from "axios";
 
 /*Ürünler listelenirken talep,başarılı ve başarısız durumların try catch yöntemi ile gösterildiği kod satırı*/
-export const listProducts = () => async (dispatch) => {
+//export const listProducts = () => async (dispatch) => {
+  export const listProducts = ({ seller = '' }) => async (dispatch) => { //49.Implement Seller View
     dispatch({
         type: PRODUCTS_LIST_REQUEST
     });
     try{
-        const {data} = await axios.get('/api/products');
+        //const {data} = await axios.get('/api/products');
+        const { data } = await axios.get(`/api/products?seller=${seller}`); //49.Implement Seller View
         dispatch({type: PRODUCTS_LIST_SUCCESS,payload:data});
     } catch(error){
         dispatch({type:PRODUCTS_LIST_FAIL,payload: error.message});
