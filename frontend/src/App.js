@@ -21,6 +21,7 @@ import OrderListScreen from "./screens/OrderListScreen";
 import UserListScreen from "./screens/UserListScreen";
 import UserEditScreen from "./screens/UserEditScreen";
 import SellerRoute from './components/SellerRoute';
+import SellerScreen from './screens/SellerScreen';
 
 function App() {
   //Değişkenleri tanımladığımız kod satırı.
@@ -107,6 +108,7 @@ function App() {
               </div>
           </header>
           <main>
+            <Route path="/seller/:id" component={SellerScreen}/>
             <Route path="/cart/:id?" component={CartScreen}/>
             <Route path="/product/:id" component={ProductScreen} exact/>
             <Route path="/product/:id/edit" component={ProductEditScreen} exact/>

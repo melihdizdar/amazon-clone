@@ -11,7 +11,8 @@ productRouter.get('/', expressAsyncHandler(async (req,res) =>{
     //const products = await Product.find({});
     const seller = req.query.seller || ''; //49.Implement Seller View
     const sellerFilter = seller ? { seller } : {}; //49.Implement Seller View
-    const products = await Product.find({ ...sellerFilter }); //49.Implement Seller View
+    //const products = await Product.find({ ...sellerFilter }); //49.Implement Seller View
+    const products = await Product.find({ ...sellerFilter }).populate('seller','seller.name seller.logo'); //50.Create Seller Page
     res.send(products);
 }));
 
@@ -24,7 +25,8 @@ productRouter.get('/seed',expressAsyncHandler(async(req,res) =>{
 
 productRouter.get('/:id',expressAsyncHandler(async(req,res) =>{
     //Products List seedinin yollanması için gereken kod satırı
-    const product = await Product.findById(req.params.id);
+    //const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.params.id).populate('seller','seller.name seller.logo seller.rating seller.numReviews'); //50.Create Seller Page
     if(product){
         res.send(product);
     }

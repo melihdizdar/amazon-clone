@@ -18,8 +18,15 @@ export default function Product(props) {
                   </Link>
                   <Rating rating={product.rating} numReviews={product.numReviews}/>
                   {/*ürünün reytinginin çekildiği satır.*/}
-                  <div className="price">${product.price}</div>
-                  {/*ürünün fiyatının çekildiği satır.*/}
+                  <div className="row">
+                    <div className="price">${product.price}</div>
+                    {/*ürünün fiyatının çekildiği satır.*/}
+                    <div>
+                        <Link to={`/seller/${product.seller._id}`}>
+                          {product.seller.seller.name}
+                        </Link>
+                    </div>
+                  </div>
               </div>
             </div>
         </div>

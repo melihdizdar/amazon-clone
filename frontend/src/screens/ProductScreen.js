@@ -35,7 +35,16 @@ export default function ProductScreen(props) {
                     {/*ürünün resminin çekildiği satır.*/}
                 </div>
                 <div className="col-1">
-                    <ul>
+                    <ul> {/*Product sayfasında seller bilgilerinin bulunduğu kısım*/}
+                        <li>
+                            Seller{' '}
+                            <h2>
+                            <Link to={`/seller/${product.seller._id}`}>
+                                {product.seller.seller.name}
+                            </Link>
+                            </h2>
+                            <Rating rating={product.seller.seller.rating} numReviews={product.seller.seller.numReviews} ></Rating>
+                        </li>
                         <li>
                             <h1>{product.name}</h1> {/*ürünün adının çekildiği satır.*/}
                         </li>
