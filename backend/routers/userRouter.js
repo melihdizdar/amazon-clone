@@ -7,6 +7,12 @@ import { generateToken, isAdmin, isAuth } from './utils.js';
 
 const userRouter = express.Router();
 
+userRouter.get('/top-sellers',expressAsyncHandler(async (req, res) => { //51.Add Top Seller Carousel
+    const topSellers = await User.find({ isSeller: true }) .sort({ 'seller.rating': -1 }) .limit(3); //51.Add Top Seller Carousel
+    res.send(topSellers); //51.Add Top Seller Carousel
+  })
+);
+
 userRouter.get('/seed', expressAsyncHandler(async(req,res) =>{
     //Kullanıcıların seedinin yollanması için gereken kod satırı
     //await User.remove({});
