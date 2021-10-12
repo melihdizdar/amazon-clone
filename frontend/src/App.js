@@ -22,6 +22,8 @@ import UserListScreen from "./screens/UserListScreen";
 import UserEditScreen from "./screens/UserEditScreen";
 import SellerRoute from './components/SellerRoute';
 import SellerScreen from './screens/SellerScreen';
+import SearchBox from "./components/SearchBox";
+import SearchScreen from "./screens/SearchScreen";
 
 function App() {
   //Değişkenleri tanımladığımız kod satırı.
@@ -40,6 +42,9 @@ function App() {
           <header className="row">
               <div>
                   <Link className="brand" to="/">amazon</Link>
+              </div>
+              <div>
+                <Route render={({history}) => <SearchBox history={history}></SearchBox>}></Route>
               </div>
               <div>
                 {/*Sepetin içindeki ürünlerin sayısı 0'dan büyük ise badge oluştur.*/}
@@ -119,6 +124,7 @@ function App() {
             <Route path="/placeorder" component={PlaceOrderScreen}/>
             <Route path="/order/:id" component={OrderScreen}/>
             <Route path="/orderhistory" component={OrderHistoryScreen}/>
+            <Route path="/search/name/:name?" component={SearchScreen} exact/>
             <PrivateRoute path="/profile" component={ProfileScreen}/>
             <AdminRoute path="/productlist" component={ProductListScreen} exact/>
             <AdminRoute path="/orderlist" component={OrderListScreen} exact/>

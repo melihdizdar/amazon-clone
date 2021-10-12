@@ -9,10 +9,13 @@ const productRouter = express.Router();
 productRouter.get('/', expressAsyncHandler(async (req,res) =>{
     //Products listelenmesi için kullanılan kod satırı
     //const products = await Product.find({});
+    const name = req.query.name || ''; //53.Create Search Box and Search Screen
+    const nameFilter = name ? { name: { $regex:name , $options:'i' } } : {}; //53.Create Search Box and Search Screen
     const seller = req.query.seller || ''; //49.Implement Seller View
     const sellerFilter = seller ? { seller } : {}; //49.Implement Seller View
     //const products = await Product.find({ ...sellerFilter }); //49.Implement Seller View
-    const products = await Product.find({ ...sellerFilter }).populate('seller','seller.name seller.logo'); //50.Create Seller Page
+    //const products = await Product.find({ ...sellerFilter }).populate('seller','seller.name seller.logo'); //50.Create Seller Page
+    const products = await Product.find({ ...sellerFilter,...nameFilter }).populate('seller','seller.name seller.logo');  //53.Create Search Box and Search Screen
     res.send(products);
 }));
 

@@ -3,13 +3,15 @@ import axios from "axios";
 
 /*Ürünler listelenirken talep,başarılı ve başarısız durumların try catch yöntemi ile gösterildiği kod satırı*/
 //export const listProducts = () => async (dispatch) => {
-  export const listProducts = ({ seller = '' }) => async (dispatch) => { //49.Implement Seller View
+//export const listProducts = ({ seller = '' }) => async (dispatch) => { //49.Implement Seller View
+export const listProducts = ({ seller = '' , name = ''}) => async (dispatch) => { //53.Create Search Box and Search Screen
     dispatch({
         type: PRODUCTS_LIST_REQUEST
     });
     try{
         //const {data} = await axios.get('/api/products');
-        const { data } = await axios.get(`/api/products?seller=${seller}`); //49.Implement Seller View
+        //const { data } = await axios.get(`/api/products?seller=${seller}`); //49.Implement Seller View
+        const { data } = await axios.get(`/api/products?seller=${seller}&name=${name}`); //53.Create Search Box and Search Screen
         dispatch({type: PRODUCTS_LIST_SUCCESS,payload:data});
     } catch(error){
         dispatch({type:PRODUCTS_LIST_FAIL,payload: error.message});
