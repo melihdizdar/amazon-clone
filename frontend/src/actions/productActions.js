@@ -5,7 +5,8 @@ import axios from "axios";
 //export const listProducts = () => async (dispatch) => {
 //export const listProducts = ({ seller = '' }) => async (dispatch) => { //49.Implement Seller View
 //export const listProducts = ({ seller = '' , name = ''}) => async (dispatch) => { //53.Create Search Box and Search Screen
-export const listProducts = ({ seller = '' , name = '', category = ''}) => async (dispatch) => { //54.Add Category Sidebar and Filter
+//export const listProducts = ({ seller = '' , name = '', category = ''}) => async (dispatch) => { //54.Add Category Sidebar and Filter
+export const listProducts = ({ seller = '' , name = '', category = '',  order = '', min = 0, max = 0, rating = 0,}) => async (dispatch) => { //55.Sort and filter product
     dispatch({
         type: PRODUCTS_LIST_REQUEST
     });
@@ -13,7 +14,8 @@ export const listProducts = ({ seller = '' , name = '', category = ''}) => async
         //const {data} = await axios.get('/api/products');
         //const { data } = await axios.get(`/api/products?seller=${seller}`); //49.Implement Seller View
         //const { data } = await axios.get(`/api/products?seller=${seller}&name=${name}`); //53.Create Search Box and Search Screen
-        const { data } = await axios.get(`/api/products?seller=${seller}&name=${name}&category=${category}`); //54.Add Category Sidebar and Filter
+        //const { data } = await axios.get(`/api/products?seller=${seller}&name=${name}&category=${category}`); //54.Add Category Sidebar and Filter
+        const { data } = await axios.get(`/api/products?seller=${seller}&name=${name}&category=${category}&min=${min}&max=${max}&rating=${rating}&order=${order}`); //55.Sort and filter product
         dispatch({type: PRODUCTS_LIST_SUCCESS,payload:data});
     } catch(error){
         dispatch({type:PRODUCTS_LIST_FAIL,payload: error.message});
