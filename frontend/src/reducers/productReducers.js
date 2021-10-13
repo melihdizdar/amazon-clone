@@ -17,6 +17,9 @@ const{
     PRODUCT_DELETE_SUCCESS,
     PRODUCT_DELETE_FAIL,
     PRODUCT_DELETE_RESET,
+    PRODUCTS_CATEGORY_LIST_REQUEST,
+    PRODUCTS_CATEGORY_LIST_SUCCESS,
+    PRODUCTS_CATEGORY_LIST_FAIL,
 } = require('../constants/productConstants');
 
 export const productListReducer = (state = { loading:true, products:[] },action) => {
@@ -35,6 +38,19 @@ export const productListReducer = (state = { loading:true, products:[] },action)
         default:
             return state;
     }
+}
+
+export const productCategoryListReducer = (state = { loading:true, products:[] },action) => { //54.Add Category Sidebar and Filter
+  switch(action.type){
+      case PRODUCTS_CATEGORY_LIST_REQUEST:
+          return{loading:true};
+      case PRODUCTS_CATEGORY_LIST_SUCCESS:
+          return{loading:false,categories: action.payload};
+      case PRODUCTS_CATEGORY_LIST_FAIL:
+          return{loading:false,error:action.payload};
+      default:
+          return state;
+  }
 }
 
 //export const productDetailsReducer = (state = {product:{},loading:true},action) => {

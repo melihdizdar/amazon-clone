@@ -1,21 +1,34 @@
-import { PRODUCTS_DETAILS_FAIL, PRODUCTS_DETAILS_SUCCESS,PRODUCTS_DETAILS_REQUEST, PRODUCTS_LIST_FAIL, PRODUCTS_LIST_REQUEST, PRODUCTS_LIST_SUCCESS, PRODUCT_CREATE_REQUEST, PRODUCT_CREATE_FAIL, PRODUCT_CREATE_SUCCESS, PRODUCT_UPDATE_REQUEST, PRODUCT_UPDATE_SUCCESS, PRODUCT_UPDATE_FAIL, PRODUCT_DELETE_REQUEST, PRODUCT_DELETE_SUCCESS, PRODUCT_DELETE_FAIL } from "../constants/productConstants"
+import { PRODUCTS_DETAILS_FAIL, PRODUCTS_DETAILS_SUCCESS,PRODUCTS_DETAILS_REQUEST, PRODUCTS_LIST_FAIL, PRODUCTS_LIST_REQUEST, PRODUCTS_LIST_SUCCESS, PRODUCT_CREATE_REQUEST, PRODUCT_CREATE_FAIL, PRODUCT_CREATE_SUCCESS, PRODUCT_UPDATE_REQUEST, PRODUCT_UPDATE_SUCCESS, PRODUCT_UPDATE_FAIL, PRODUCT_DELETE_REQUEST, PRODUCT_DELETE_SUCCESS, PRODUCT_DELETE_FAIL, PRODUCTS_CATEGORY_LIST_REQUEST, PRODUCTS_CATEGORY_LIST_SUCCESS, PRODUCTS_CATEGORY_LIST_FAIL } from "../constants/productConstants"
 import axios from "axios";
 
 /*Ürünler listelenirken talep,başarılı ve başarısız durumların try catch yöntemi ile gösterildiği kod satırı*/
 //export const listProducts = () => async (dispatch) => {
 //export const listProducts = ({ seller = '' }) => async (dispatch) => { //49.Implement Seller View
-export const listProducts = ({ seller = '' , name = ''}) => async (dispatch) => { //53.Create Search Box and Search Screen
+//export const listProducts = ({ seller = '' , name = ''}) => async (dispatch) => { //53.Create Search Box and Search Screen
+export const listProducts = ({ seller = '' , name = '', category = ''}) => async (dispatch) => { //54.Add Category Sidebar and Filter
     dispatch({
         type: PRODUCTS_LIST_REQUEST
     });
     try{
         //const {data} = await axios.get('/api/products');
         //const { data } = await axios.get(`/api/products?seller=${seller}`); //49.Implement Seller View
-        const { data } = await axios.get(`/api/products?seller=${seller}&name=${name}`); //53.Create Search Box and Search Screen
+        //const { data } = await axios.get(`/api/products?seller=${seller}&name=${name}`); //53.Create Search Box and Search Screen
+        const { data } = await axios.get(`/api/products?seller=${seller}&name=${name}&category=${category}`); //54.Add Category Sidebar and Filter
         dispatch({type: PRODUCTS_LIST_SUCCESS,payload:data});
     } catch(error){
         dispatch({type:PRODUCTS_LIST_FAIL,payload: error.message});
     }
+};
+export const listProductCategories = () => async (dispatch) => { //54.Add Category Sidebar and Filter
+  dispatch({ //54.Add Category Sidebar and Filter
+    type: PRODUCTS_CATEGORY_LIST_REQUEST, //54.Add Category Sidebar and Filter
+  }); //54.Add Category Sidebar and Filter
+  try {
+    const { data } = await axios.get(`/api/products/categories`); //54.Add Category Sidebar and Filter
+    dispatch({ type: PRODUCTS_CATEGORY_LIST_SUCCESS, payload: data }); //54.Add Category Sidebar and Filter
+  } catch (error) { //54.Add Category Sidebar and Filter
+    dispatch({ type: PRODUCTS_CATEGORY_LIST_FAIL, payload: error.message }); //54.Add Category Sidebar and Filter
+  }
 };
 /*Ürünlerin detay sayfasında talep,başarılı ve başarısız durumların try catch yöntemi ile gösterildiği kod satırı*/
 export const detailsProduct = (productId) => async(dispatch) => {

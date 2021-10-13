@@ -10,13 +10,22 @@ productRouter.get('/', expressAsyncHandler(async (req,res) =>{
     //Products listelenmesi için kullanılan kod satırı
     //const products = await Product.find({});
     const name = req.query.name || ''; //53.Create Search Box and Search Screen
+    const category = req.query.category || ''; //54.Add Category Sidebar and Filter
     const nameFilter = name ? { name: { $regex:name , $options:'i' } } : {}; //53.Create Search Box and Search Screen
     const seller = req.query.seller || ''; //49.Implement Seller View
     const sellerFilter = seller ? { seller } : {}; //49.Implement Seller View
+    const categoryFilter = category ? { category } : {}; //54.Add Category Sidebar and Filter
     //const products = await Product.find({ ...sellerFilter }); //49.Implement Seller View
     //const products = await Product.find({ ...sellerFilter }).populate('seller','seller.name seller.logo'); //50.Create Seller Page
-    const products = await Product.find({ ...sellerFilter,...nameFilter }).populate('seller','seller.name seller.logo');  //53.Create Search Box and Search Screen
+    //const products = await Product.find({ ...sellerFilter,...nameFilter }).populate('seller','seller.name seller.logo');  //53.Create Search Box and Search Screen
+    const products = await Product.find({ ...sellerFilter,...nameFilter,...categoryFilter }).populate('seller','seller.name seller.logo');; //54.Add Category Sidebar and Filter
     res.send(products);
+}));
+
+productRouter.get('/categories', expressAsyncHandler(async (req,res) => { //54.Add Category Sidebar and Filter
+  const categories = await Product.find().distinct('category'); //54.Add Category Sidebar and Filter
+  //Yukarıdaki kodun amacı categories'i tanımlarken productlarda "category" kelimesini bulmaya yarayan kod.
+  res.send(categories); //54.Add Category Sidebar and Filter
 }));
 
 productRouter.get('/seed',expressAsyncHandler(async(req,res) =>{
