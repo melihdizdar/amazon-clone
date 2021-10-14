@@ -28,8 +28,11 @@ app.use('/api/orders', orderRouter);
 // api/orders linkini orderRoter'a bağladık
 app.get('/api/config/paypal', (req,res) => {
     res.send(process.env.PAYPAL_CLIENT_ID || 'sb')
+    // 30.PayPal Button ekleme dersi -> 'sb' = sandbox
 });
-// 30.PayPal Button ekleme dersi -> 'sb' = sandbox
+app.get('/api/config/google', (req, res) => {
+    res.send(process.env.GOOGLE_API_KEY || '');//57.Choose Address on google map
+});
 const __dirname = path.resolve(); //40.upload product image
 app.use('/uploads', express.static(path.join(__dirname, '/uploads'))); //40.upload product image
 app.get('/',(req,res) => {
