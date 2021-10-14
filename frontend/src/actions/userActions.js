@@ -51,7 +51,8 @@ export const detailsUser = (userId) => async (dispatch,getState) => { //33. ders
   const { userSignin:{userInfo}} = getState();
   try{
     const {data} = await axios.get(`/api/users/${userId}`, {
-      header: {Authorization: `Bearer ${userInfo.token}`},
+      //header: {Authorization: `Bearer ${userInfo.token}`},
+      headers: { Authorization: `Bearer ${userInfo?.token}`}, //58.Bugfix runnig locally without issue
     });
     dispatch({type: USER_DETAILS_SUCCESS, payload:data});
   } catch(error) {

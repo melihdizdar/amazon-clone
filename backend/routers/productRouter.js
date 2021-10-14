@@ -2,6 +2,7 @@ import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import data from '../data.js';
 import Product from '../models/productModel.js';
+import User from '../models/userModel.js'; //58.Bugfix runnig locally without issue
 import { isAuth , isAdmin , isSellerOrAdmin  } from './utils.js';
 
 const productRouter = express.Router();
@@ -39,9 +40,17 @@ productRouter.get('/categories', expressAsyncHandler(async (req,res) => { //54.A
 
 productRouter.get('/seed',expressAsyncHandler(async(req,res) =>{
     //Products seedinin yollanması için gereken kod satırı
-    //await Product.remove({});
-    const createdProducts = await Product.insertMany(data.products);
-    res.send({createdProducts});
+    //await Product.remove({});//
+    //const createdProducts = await Product.insertMany(data.products);
+    //res.send({createdProducts});
+    const seller = await User.findOne({ isSeller: true }); //58.Bugfix runnig locally without issue
+    if (seller) { //58.Bugfix runnig locally without issue
+      const products = data.products.map((product) => ({...product,seller: seller._id,})); //58.Bugfix runnig locally without issue
+      const createdProducts = await Product.insertMany(products); //58.Bugfix runnig locally without issue
+      res.send({ createdProducts }); //58.Bugfix runnig locally without issue
+    } else {
+      res.status(500).send({ message: 'No seller found. first run /api/users/seed' }); //58.Bugfix runnig locally without issue
+    }
 }));
 
 productRouter.get('/:id',expressAsyncHandler(async(req,res) =>{

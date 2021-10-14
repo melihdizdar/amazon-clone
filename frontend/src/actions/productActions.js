@@ -8,7 +8,7 @@ import axios from "axios";
 //export const listProducts = ({ seller = '' , name = '', category = ''}) => async (dispatch) => { //54.Add Category Sidebar and Filter
 export const listProducts = ({ seller = '' , name = '', category = '',  order = '', min = 0, max = 0, rating = 0,}) => async (dispatch) => { //55.Sort and filter product
     dispatch({
-        type: PRODUCTS_LIST_REQUEST
+        type: PRODUCTS_LIST_REQUEST,
     });
     try{
         //const {data} = await axios.get('/api/products');
