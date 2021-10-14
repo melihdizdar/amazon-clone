@@ -1,4 +1,4 @@
-import { PRODUCTS_DETAILS_FAIL, PRODUCTS_DETAILS_SUCCESS,PRODUCTS_DETAILS_REQUEST, PRODUCTS_LIST_FAIL, PRODUCTS_LIST_REQUEST, PRODUCTS_LIST_SUCCESS, PRODUCT_CREATE_REQUEST, PRODUCT_CREATE_FAIL, PRODUCT_CREATE_SUCCESS, PRODUCT_UPDATE_REQUEST, PRODUCT_UPDATE_SUCCESS, PRODUCT_UPDATE_FAIL, PRODUCT_DELETE_REQUEST, PRODUCT_DELETE_SUCCESS, PRODUCT_DELETE_FAIL, PRODUCTS_CATEGORY_LIST_REQUEST, PRODUCTS_CATEGORY_LIST_SUCCESS, PRODUCTS_CATEGORY_LIST_FAIL } from "../constants/productConstants"
+import { PRODUCTS_DETAILS_FAIL, PRODUCTS_DETAILS_SUCCESS,PRODUCTS_DETAILS_REQUEST, PRODUCTS_LIST_FAIL, PRODUCTS_LIST_REQUEST, PRODUCTS_LIST_SUCCESS, PRODUCT_CREATE_REQUEST, PRODUCT_CREATE_FAIL, PRODUCT_CREATE_SUCCESS, PRODUCT_UPDATE_REQUEST, PRODUCT_UPDATE_SUCCESS, PRODUCT_UPDATE_FAIL, PRODUCT_DELETE_REQUEST, PRODUCT_DELETE_SUCCESS, PRODUCT_DELETE_FAIL, PRODUCTS_CATEGORY_LIST_REQUEST, PRODUCTS_CATEGORY_LIST_SUCCESS, PRODUCTS_CATEGORY_LIST_FAIL, PRODUCT_REVIEW_CREATE_REQUEST, PRODUCT_REVIEW_CREATE_SUCCESS, PRODUCT_REVIEW_CREATE_FAIL } from "../constants/productConstants"
 import axios from "axios";
 
 /*Ürünler listelenirken talep,başarılı ve başarısız durumların try catch yöntemi ile gösterildiği kod satırı*/
@@ -94,3 +94,18 @@ export const deleteProduct = (productId) => async (dispatch, getState) => {  //4
       dispatch({ type: PRODUCT_DELETE_FAIL, payload: message });
     }
   };
+
+  export const createReview = (productId,review) => async (dispatch,getState) => { //56.Rate and Review Products
+    dispatch({type: PRODUCT_REVIEW_CREATE_REQUEST}); //56.Rate and Review Products
+    const { userSignin: {userInfo} } = getState(); //56.Rate and Review Products
+    try {
+        const { data } = await axios.post(`/api/products/${productId}/reviews`, review , { //56.Rate and Review Products
+            headers: { Authorization: `Bearer ${userInfo.token}` }, //56.Rate and Review Products
+        });
+        dispatch({type: PRODUCT_REVIEW_CREATE_SUCCESS, payload: data.review,  //56.Rate and Review Products
+        });
+    } catch(error) {
+        const message = error.response && error.response.data.message ? error.response.data.message : error.message; //56.Rate and Review Products
+        dispatch({type: PRODUCT_REVIEW_CREATE_FAIL, payload: message}); //56.Rate and Review Products
+    }
+}
