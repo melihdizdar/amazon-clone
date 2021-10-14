@@ -1,7 +1,7 @@
 import express from "express";
 import expressAsyncHandler from "express-async-handler";
 import Order from "../models/orderModel.js";
-import { isAdmin, isAuth, isSellerOrAdmin } from "./utils.js";
+import { isAdmin, isAuth, isSellerOrAdmin, mailgun, payOrderEmailTemplate, } from "./utils.js";
 
 const orderRouter = express.Router();
 
@@ -53,7 +53,8 @@ orderRouter.get('/:id',isAuth,expressAsyncHandler(async (req, res) => {
 
 orderRouter.put('/:id/pay'),isAuth,expressAsyncHandler(async (req,res) => {
   // 31.burda order işlemi yapılınca olan kullanılacak değerlerin tanımlamaları yapıldı
-  const order = await Order.findById(req.params.id);
+  //const order = await Order.findById(req.params.id);
+  const order = await Order.findById(req.params.id).populate( 'user', 'email name'); //60.Email order receipt
   if (order) {
     order.isPaid = true;
     order.paidAt = Date.now();
@@ -64,6 +65,21 @@ orderRouter.put('/:id/pay'),isAuth,expressAsyncHandler(async (req,res) => {
       email_address: req.body.email_address,
     };
     const updatedOrder = await order.save();
+    mailgun().messages().send( //60.Email order receipt
+      {
+        from: 'Amazon <amazon@mg.yourdomain.com>', //60.Email order receipt
+        to: `${order.user.name} <${order.user.email}>`, //60.Email order receipt
+        subject: `New order ${order._id}`, //60.Email order receipt
+        html: payOrderEmailTemplate(order), //60.Email order receipt
+      },
+      (error, body) => { //60.Email order receipt
+        if (error) { //60.Email order receipt
+          console.log(error); //60.Email order receipt
+        } else {
+          console.log(body); //60.Email order receipt
+        }
+      }
+    );
     res.send({message: 'Order Paid', order: updatedOrder});
   } else {
     res.status(404).send({message: 'Order Not Found'});
