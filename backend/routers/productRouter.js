@@ -10,6 +10,8 @@ const productRouter = express.Router();
 productRouter.get('/', expressAsyncHandler(async (req,res) =>{
     //Products listelenmesi için kullanılan kod satırı
     //const products = await Product.find({});
+    const pageSize = 3; //59.Implement Pagination
+    const page = Number(req.query.pageNumber) || 1; //59.Implement Pagination
     const name = req.query.name || ''; //53.Create Search Box and Search Screen
     const category = req.query.category || ''; //54.Add Category Sidebar and Filter
     const nameFilter = name ? { name: { $regex:name , $options:'i' } } : {}; //53.Create Search Box and Search Screen
@@ -24,12 +26,15 @@ productRouter.get('/', expressAsyncHandler(async (req,res) =>{
     const priceFilter = min && max ? { price: { $gte: min, $lte: max } } : {}; //55.Sort and filter product
     const ratingFilter = rating ? { rating: { $gte: rating } } : {}; //55.Sort and filter product
     const sortOrder = order === 'lowest' ? { price: 1 } : order === 'highest' ? { price: -1 } : order === 'toprated' ? { rating: -1 } : { _id: -1 }; //55.Sort and filter product
+    const count = await Product.count({...sellerFilter,...nameFilter,...categoryFilter,...priceFilter,...ratingFilter,}); //59.Implement Pagination
     //const products = await Product.find({ ...sellerFilter }); //49.Implement Seller View
     //const products = await Product.find({ ...sellerFilter }).populate('seller','seller.name seller.logo'); //50.Create Seller Page
     //const products = await Product.find({ ...sellerFilter,...nameFilter }).populate('seller','seller.name seller.logo');  //53.Create Search Box and Search Screen
     //const products = await Product.find({ ...sellerFilter,...nameFilter,...categoryFilter }).populate('seller','seller.name seller.logo'); //54.Add Category Sidebar and Filter
-    const products = await Product.find({ ...sellerFilter,...nameFilter,...categoryFilter,...priceFilter,...ratingFilter, }).populate('seller','seller.name seller.logo').sort(sortOrder); //55.Sort and filter product
-    res.send(products);
+    //const products = await Product.find({ ...sellerFilter,...nameFilter,...categoryFilter,...priceFilter,...ratingFilter, }).populate('seller','seller.name seller.logo').sort(sortOrder); //55.Sort and filter product
+    const products = await Product.find({ ...sellerFilter,...nameFilter,...categoryFilter,...priceFilter,...ratingFilter, }).populate('seller','seller.name seller.logo').sort(sortOrder).skip(pageSize * (page - 1)).limit(pageSize); //59.Implement Pagination
+    res.send({ products, page, pages: Math.ceil(count / pageSize) }); //59.Implement Pagination
+    //res.send(products);
 }));
 
 productRouter.get('/categories', expressAsyncHandler(async (req,res) => { //54.Add Category Sidebar and Filter
