@@ -29,6 +29,8 @@ import { listProductCategories } from "./actions/productActions";
 import LoadingBox from "./components/LoadingBox";
 import MessageBox from "./components/MessageBox";
 import MapScreen from "./screens/MapScreen";
+import DashboardScreen from "./screens/DashboardScreen";
+
 
 function App() {
   //Değişkenleri tanımladığımız kod satırı.
@@ -167,7 +169,8 @@ function App() {
             <AdminRoute path="/orderlist" component={OrderListScreen} exact/>
             <AdminRoute path="/userlist" component={UserListScreen}/>
             <AdminRoute path="/user/:id/edit" component={UserEditScreen}/>
-            <SellerRoute path="/productlist/seller" component={ProductListScreen}/>
+            <AdminRoute path="/dashboard" component={DashboardScreen}/>
+            <SellerRoute path="/productlist/seller" component={DashboardScreen}/>
             <SellerRoute path="/orderlist/seller" component={OrderListScreen}/>
             <Route path="/" component={HomeScreen} exact/>
           </main>
