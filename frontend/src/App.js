@@ -30,6 +30,8 @@ import LoadingBox from "./components/LoadingBox";
 import MessageBox from "./components/MessageBox";
 import MapScreen from "./screens/MapScreen";
 import DashboardScreen from "./screens/DashboardScreen";
+import SupportScreen from './screens/SupportScreen';
+import ChatBox from './components/ChatBox';
 
 
 function App() {
@@ -122,6 +124,9 @@ function App() {
                         <li>
                           <Link to="/userlist">Users</Link>
                         </li>
+                        <li>
+                          <Link to="/support">Support</Link>
+                        </li>
                       </ul>
                     </div>
                   )}
@@ -170,11 +175,15 @@ function App() {
             <AdminRoute path="/userlist" component={UserListScreen}/>
             <AdminRoute path="/user/:id/edit" component={UserEditScreen}/>
             <AdminRoute path="/dashboard" component={DashboardScreen}/>
+            <AdminRoute path="/support" component={SupportScreen}/>
             <SellerRoute path="/productlist/seller" component={DashboardScreen}/>
             <SellerRoute path="/orderlist/seller" component={OrderListScreen}/>
             <Route path="/" component={HomeScreen} exact/>
           </main>
-          <footer className="row center">All right reserved</footer>
+          <footer className="row center">
+            {userInfo && !userInfo.isAdmin && <ChatBox userInfo={userInfo} />}
+            <div>All right reserved</div>{' '}
+          </footer>
       </div>
     </BrowserRouter>
   );
