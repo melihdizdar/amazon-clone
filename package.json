@@ -1,22 +1,22 @@
 {
-  "name": "amazona",
+  "name": "amazon-clone",
   "type": "module",
   "version": "1.0.0",
-  "description": "Ecommerce website like amazon",
+  "description": "On this site, products are exhibited and sold with real payment method.",
   "main": "index.js",
   "scripts": {
     "start": "nodemon --watch backend --exec node --experimental-modules backend/server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/basir/amazona.git"
+    "url": "git+https://github.com/melihdizdar/amazon-clone.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/basir/amazona/issues"
+    "url": "https://github.com/melihdizdar/amazon-clone/issues"
   },
-  "homepage": "https://github.com/basir/amazona#readme",
+  "homepage": "https://github.com/melihdizdar/amazon-clone#readme",
   "dependencies": {
     "axios": "^0.21.4",
     "bcryptjs": "^2.4.3",
