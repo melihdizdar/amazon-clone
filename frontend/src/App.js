@@ -176,7 +176,7 @@ function App() {
             <AdminRoute path="/user/:id/edit" component={UserEditScreen}/>
             <AdminRoute path="/dashboard" component={DashboardScreen}/>
             <AdminRoute path="/support" component={SupportScreen}/>
-            <SellerRoute path="/productlist/seller" component={DashboardScreen}/>
+            <SellerRoute path="/productlist/seller" component={ProductListScreen}/>
             <SellerRoute path="/orderlist/seller" component={OrderListScreen}/>
             <Route path="/" component={HomeScreen} exact/>
           </main>
